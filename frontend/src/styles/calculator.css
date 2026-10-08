@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    transition: 0.2s ease-in-out
+}
+
+.calculator-container {
+    @apply grid place-items-center min-h-screen;
+
+}
+
+.screen {
+    @apply p-5 bg-gray-300;
+    @apply text-center;
+    @apply text-2xl;
+}
+
+.btn-containers {
+    @apply grid grid-cols-3 bg-gray-200 text-gray-300;
+
+}
+
+button {
+
+    @apply p-5 bg-black/50 gap-2 m-2 rounded-sm;
+}
+
+button:hover {
+    @apply bg-black/90;
+}
