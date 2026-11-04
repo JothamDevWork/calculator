@@ -1,4 +1,5 @@
 import { useState } from "react";
+import calculate from "../logics/calculate.js";
 import "../styles/calculator.css"
 
 
@@ -11,6 +12,49 @@ function Calculator() {
         const value = event.target.value;
 
         setInput(prevInput => prevInput + value)
+
+
+    }
+
+    function handleBackspace(input) {
+
+        input = String(input);
+        input = input.slice(0, -1);
+        return String(input);
+    }
+
+
+
+    function handleCalculate(input) {
+
+        let numbers = input.split(/[+*-/%]/);
+        let operators = input.match(/[+*-/%]/g);
+        let result = Number(numbers[0]);
+
+        for (let i = 0; i < numbers.length - 1; i++) {
+            result = calculate(result, operators[i], Number(numbers[i + 1]))
+
+        }
+
+        return result;
+        /* let operation = "";
+         let operationIndex = -1;
+         const operators = ['+', '-', '*', '/', '%']
+ 
+         for (const operator of operators) {
+             let index = input.indexOf(operator);
+ 
+             if (index !== -1) {
+                 operation = operator;
+                 operationIndex = index;
+                 break;
+             }
+         }
+ 
+         const num1 = Number(input.slice(0, operationIndex));
+         const num2 = Number(input.slice(operationIndex + 1));
+ 
+         return calculate(num1, operation, num2) */
     }
 
     return (
@@ -40,7 +84,8 @@ function Calculator() {
                         <button onClick={handleInput} value={'/'}>/</button>
                         <button onClick={handleInput} value={'%'}>%</button>
                         <button onClick={() => setInput("")}>C</button>
-                        <button onClick={() => setInput(eval(input))} value={'='}>=</button>
+                        <button onClick={() => setInput(handleBackspace(input))}>⌫</button>
+                        <button onClick={() => setInput(handleCalculate(input))} value={'='}>=</button>
                     </div>
                 </div>
 
