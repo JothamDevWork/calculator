@@ -1,8 +1,9 @@
-const input = "5*-239-222";
+const input = "10+5*2";
 const operators = "+-*/%";
 let numbers = [];
 let currentNum = "";
 let foundoperators = [];
+
 
 for (let i = 0; i < input.length; i++) {
     console.log(`${i} ${input[i]}`);
@@ -58,6 +59,15 @@ for (let i = 0; i < input.length; i++) {
 
 console.log(numbers)
 console.log(foundoperators)
+
+
+let index = foundoperators.indexOf("*");
+let leftnum = numbers[index];
+let rightnum = numbers[index + 1];
+
+let result = leftnum * rightnum;
+console.log(result);
+
 
 
 
