@@ -1,11 +1,11 @@
-const input = "10+5*2";
+const input = "10+-*5";
 const operators = "+-*/%";
 let numbers = [];
 let currentNum = "";
 let foundoperators = [];
 let result;
-
-
+let leftnum;
+let rightnum;
 for (let i = 0; i < input.length; i++) {
     console.log(`${i} ${input[i]}`);
 
@@ -21,31 +21,47 @@ for (let i = 0; i < input.length; i++) {
         if (i === 0 || operators.includes(input[i - 1])) {
             console.log('Unary minus: Negation');
 
+            if (operators.includes(input[i + 1]) && input[i + 1] !== "-") {
+                throw Error(`${input[i + 1]} is invalid because  two operators cannot be next ot each other`);
+            }
+
             if (/[0-9]/.test(input[i + 1])) {
                 currentNum += "-";
                 i++;
 
 
-                while (/[0-9]/.test(input[i])) {
+                while (/[0-9]/.test(input[i]) || /[.]/.test(input[i])) {
+
+
+
                     currentNum += input[i];
                     i++;
+
                 }
                 i--;
 
                 numbers.push(currentNum);
                 currentNum = "";
+            } else {
+                throw Error("invalid unary minus");
             }
         } else {
+
 
             foundoperators.push(input[i]);
 
         }
     } else if (operators.includes(input[i])) {
+
+        if (operators.includes(input[i + 1]) && input[i + 1] !== "-") {
+            throw Error(`${input[i + 1]} is invalid because  two operators cannot be next ot each other`);
+        }
+
         foundoperators.push(input[i]);
 
-    } else if (/[0-9]/.test(input[i])) {
+    } else if (/[0-9]/.test(input[i]) || /[.]/.test(input[i])) {
 
-        while (/[0-9]/.test(input[i])) {
+        while (/[0-9]/.test(input[i]) || /[.]/.test(input[i])) {
             currentNum += input[i];
             i++;
         }
@@ -58,11 +74,14 @@ for (let i = 0; i < input.length; i++) {
 
 }
 
+console.log(numbers);
+console.log(foundoperators);
 
-while (foundoperators.includes("*") || foundoperators.includes("/")) {
+
+while (foundoperators.includes("*") || foundoperators.includes("/") || foundoperators.includes("%")) {
 
 
-    let index = foundoperators.findIndex(operator => operator === "*" || operator === "/");
+    let index = foundoperators.findIndex(operator => operator === "*" || operator === "/" || operator === "%");
     let operator = foundoperators[index];
 
     if (operator === "*") {
@@ -70,19 +89,35 @@ while (foundoperators.includes("*") || foundoperators.includes("/")) {
         leftnum = numbers[index];
         rightnum = numbers[index + 1];
         result = Number(leftnum) * Number(rightnum);
-    } else {
+    } else if (operator === "/") {
 
         leftnum = numbers[index];
         rightnum = numbers[index + 1];
-        result = Number(leftnum) / Number(rightnum);
+        if (Number(rightnum) === 0) {
+            throw new Error("Cannot Divide By 0");
+        } else {
+            result = Number(leftnum) / Number(rightnum);
+        }
+
+    } else {
+
+
+        leftnum = numbers[index]
+        rightnum = numbers[index + 1];
+
+        if (Number(rightnum) === 0) {
+            throw new Error("Cannot get modulo by 0");
+        } else {
+            result = Number(leftnum) % Number(rightnum);
+        }
+
     }
 
     numbers.splice(index, 2, result);
     foundoperators.splice(index, 1);
 
 }
-console.log(numbers);
-console.log(foundoperators);
+
 
 
 
@@ -108,34 +143,4 @@ while (foundoperators.includes("+") || foundoperators.includes("-")) {
     foundoperators.splice(index, 1);
 
 }
-/*
-let index = foundoperators.indexOf("*");
-let leftnum = numbers[index];
-let rightnum = numbers[index + 1];
-
-let result = leftnum * rightnum;
-console.log(result);
-
-numbers.splice(index, 2, result);
-foundoperators.splice(index, 1);
-
-leftnum = numbers[0];
-rightnum = numbers[1];
-
-result = Number(leftnum) + Number(rightnum);
-console.log(result);
-
-numbers.splice(0, 2, result);
-foundoperators.splice(0, 1);
-
-console.log(numbers);
-console.log(foundoperators);
-
-
-*/
-
-
-
-
-
 
